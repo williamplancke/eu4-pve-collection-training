@@ -1,0 +1,151 @@
+EU4txt
+date=1555.3.27
+save_game="Saturday Session 1 Save Edits Final.eu4"
+player="NPL"
+displayed_country_name="Nepal"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+multi_player=yes
+not_observer=yes
+campaign_id="04ebd90f-6668-4d55-8a2b-b17c1a47ea6c"
+campaign_length=22187
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="NPL"
+		localization="Nepal"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Nasîr I"
+		value=53.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=32.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		value=970436.000
+		sample_value=1000.000
+		sample_count=111
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		value=744542.000
+		sample_value=776.000
+		sample_count=111
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		value=80.000
+		sample_count=111
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		value=5.000
+		sample_count=111
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=19.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=174.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=30.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§GAlonso Cienfuegos§! ( 5£military_view_icon_fire£ / 5£military_view_icon_shock£ / 4£military_view_icon_maneuver£ / 2£military_view_icon_siege£)"
+		value=26.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="sunni"
+		localization="Sunni"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Bengal Delta"
+		value=38.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+		value=2.000
+	}
+}
+checksum="b6004e789821cce6bce0a375dab5b7bc"

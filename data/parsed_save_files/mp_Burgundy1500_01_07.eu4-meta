@@ -1,0 +1,161 @@
+EU4txt
+date=1500.1.7
+save_game=".eu4"
+player="BUR"
+displayed_country_name="Burgundy"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+mods_enabled_names={
+	{
+		filename="mod/ugc_3378720727.mod"
+		name="MRMLorbFork2024"
+	}
+ {
+		filename="mod/ugc_2016264376.mod"
+		name="The Great Exhibition"
+	}
+ 
+}
+multi_player=yes
+not_observer=yes
+campaign_id="d21c9bf3-2036-4f33-ad95-1909b2b5d55e"
+campaign_length=12958
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="BUR"
+		localization="Burgundy"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Charles I"
+		value=39.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=14.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+		value=2.000
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		value=1269933.000
+		sample_count=56
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		value=957072.000
+		sample_count=56
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		value=3.000
+		sample_count=56
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		value=24.000
+		sample_count=56
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=9.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=39.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+		value=4.000
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=16.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§GBarthélemy de Toulonjon§! ( 6£military_view_icon_fire£ / 5£military_view_icon_shock£ / 6£military_view_icon_maneuver£ / 2£military_view_icon_siege£)"
+		value=30.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="catholic"
+		localization="Catholic"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Metz"
+		value=30.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+	}
+}
+checksum="9f387a1e49c8b32974b0eec77dc65f4f"

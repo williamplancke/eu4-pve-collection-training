@@ -1,0 +1,153 @@
+EU4txt
+date=1455.1.2
+save_game=".eu4"
+player="MAM"
+displayed_country_name="Mamluks"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+mods_enabled_names={
+	{
+		filename="mod/ugc_2016264376.mod"
+		name="The Great Exhibition"
+	}
+ 
+}
+multi_player=yes
+not_observer=yes
+campaign_id="e39071ce-d49b-4b88-b916-47f049009382"
+campaign_length=2479
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="MAM"
+		localization="Mamluks"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Barsbay I"
+		value=8.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=3.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		value=8691.000
+		sample_count=11
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		value=7185.000
+		sample_count=11
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		sample_count=11
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		sample_count=11
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=1.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=8.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=3.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§G§! ( 3£military_view_icon_fire£ / 3£military_view_icon_shock£ / 0£military_view_icon_maneuver£ / 1£military_view_icon_siege£)"
+		value=13.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="sunni"
+		localization="Sunni"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Qahirah"
+		value=24.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+	}
+}
+checksum="cafe672ce72d41b9110df7b6f081cb86"

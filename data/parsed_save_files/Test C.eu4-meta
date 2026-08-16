@@ -1,0 +1,145 @@
+EU4txt
+date=1445.11.11
+save_game="Test 1444.eu4"
+player="QAR"
+displayed_country_name="Qara Qoyunlu"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"King of Kings"
+}
+mods_enabled_names={
+	{
+		filename="mod/ugc_253263609.mod"
+		name="Graphical Map Improvements"
+	}
+ {
+		filename="mod/ugc_3642835631.mod"
+		name="yeppers' groyper army"
+	}
+ 
+}
+multi_player=no
+not_observer=yes
+campaign_id="e7bbf542-8da5-4fbc-a71a-8c043483979d"
+campaign_length=28
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="QAR"
+		localization="Qara Qoyunlu"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Jahân Shâh"
+		value=1.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		sample_count=1
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		sample_count=1
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		sample_count=1
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		sample_count=1
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=1.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="shiite"
+		localization="Shia"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Tabriz"
+		value=17.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+	}
+}
+checksum="63d116e610b42b78728281d3a3f50d22"

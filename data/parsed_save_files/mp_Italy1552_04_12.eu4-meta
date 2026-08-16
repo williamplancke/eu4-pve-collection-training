@@ -1,0 +1,157 @@
+EU4txt
+date=1552.4.14
+save_game="mp_Venice1505_01_01.eu4"
+player="ITA"
+displayed_country_name="Italy"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+mods_enabled_names={
+	{
+		filename="mod/ugc_2016264376.mod"
+		name="The Great Exhibition"
+	}
+ 
+}
+multi_player=yes
+not_observer=yes
+campaign_id="03a34572-f0b7-4a1a-b48b-ab9f60997498"
+campaign_length=21552
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="ITA"
+		localization="Italy"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Ferdinando Sforza"
+		value=18.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=31.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+		value=3.000
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		sample_value=3212.000
+		sample_count=108
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		sample_value=23065.000
+		sample_count=108
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		value=108.000
+		sample_count=108
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		value=34.000
+		sample_count=108
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=10.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=51.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+		value=19.000
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=47.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§GBenedetto Galilei§! ( 5£military_view_icon_fire£ / 6£military_view_icon_shock£ / 3£military_view_icon_maneuver£ / 2£military_view_icon_siege£)"
+		value=27.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="catholic"
+		localization="Catholic"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Venezia"
+		value=37.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+	}
+}
+checksum="428d71acb2fa0f996375a0e22ed801e2"

@@ -1,0 +1,154 @@
+EU4txt
+date=1602.8.27
+save_game="mp_Hindustan1570_01_03.eu4"
+player="NPL"
+displayed_country_name="Nepal"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Dharma - Indian Sultanate Pack"
+	"Dharma - Hindu Unit Pack"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+multi_player=yes
+not_observer=yes
+campaign_id="16aecd02-0053-4cad-b647-8b5e6fff2762"
+campaign_length=48989
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="NPL"
+		localization="Nepal"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Pratapamalla I"
+		value=43.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=32.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+		value=6.000
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		value=544213.000
+		sample_count=158
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		value=439725.000
+		sample_value=4793.000
+		sample_count=158
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		value=36.000
+		sample_count=158
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		value=33.000
+		sample_count=158
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=44.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=312.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+		value=87.000
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=36.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§GMullah Qutb al-Din Safsikhan§! ( 6£military_view_icon_fire£ / 5£military_view_icon_shock£ / 4£military_view_icon_maneuver£ / 2£military_view_icon_siege£)"
+		value=28.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="shiite"
+		localization="Shia"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Mudgal"
+		value=39.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+		value=1.000
+	}
+}
+checksum="10572a130b767314f9884afe61267c7f"

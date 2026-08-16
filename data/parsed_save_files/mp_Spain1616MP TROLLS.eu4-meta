@@ -1,0 +1,153 @@
+EU4txt
+date=1616.11.27
+save_game="Austria1550_04_02.eu4"
+player="SPA"
+displayed_country_name="Spain"
+savegame_version={
+	first=1
+	second=37
+	third=5
+	forth=0
+	name="Inca"
+}
+savegame_versions={
+	"1.37.5.0"
+}
+dlc_enabled={
+	"Conquest of Paradise"
+	"Wealth of Nations"
+	"Res Publica"
+	"Art of War"
+	"El Dorado"
+	"Common Sense"
+	"The Cossacks"
+	"Mare Nostrum"
+	"Rights of Man"
+	"Mandate of Heaven"
+	"Third Rome"
+	"Cradle of Civilization"
+	"Rule Britannia"
+	"Dharma"
+	"Dharma - Indian Sultanate Pack"
+	"Dharma - Hindu Unit Pack"
+	"Golden Century"
+	"Emperor"
+	"Leviathan"
+	"Origins"
+	"Lions of the North"
+	"Domination"
+	"King of Kings"
+	"Winds of Change"
+}
+multi_player=yes
+not_observer=yes
+campaign_id="b7661c38-f2c4-4b97-b3a5-e29044bdb39a"
+campaign_length=43045
+campaign_stats={
+{
+		id=0
+		comparison=1
+		key="game_country"
+		selector="SPA"
+		localization="Spain"
+	}
+{
+		id=1
+		comparison=2
+		key="longest_reign"
+		localization="Carlos I"
+		value=56.000
+	}
+{
+		id=2
+		comparison=2
+		key="wars_won"
+		value=59.000
+	}
+{
+		id=3
+		comparison=2
+		key="wars_lost"
+		value=11.000
+	}
+{
+		id=4
+		comparison=2
+		key="army_kills"
+		sample_value=26000.000
+		sample_count=172
+	}
+{
+		id=5
+		comparison=2
+		key="army_losses"
+		sample_value=14908.000
+		sample_count=172
+	}
+{
+		id=6
+		comparison=2
+		key="navy_kills"
+		value=153.000
+		sample_count=172
+	}
+{
+		id=7
+		comparison=2
+		key="navy_losses"
+		value=118.000
+		sample_count=172
+	}
+{
+		id=8
+		comparison=2
+		key="countries_removed"
+		value=38.000
+	}
+{
+		id=9
+		comparison=2
+		key="provs_taken"
+		value=292.000
+	}
+{
+		id=10
+		comparison=2
+		key="provs_lost"
+		value=58.000
+	}
+{
+		id=11
+		comparison=0
+		key="leader_count"
+		value=47.000
+	}
+{
+		id=12
+		comparison=0
+		key="best_leader"
+		localization="§GBaltasar de Borja§! ( 5£military_view_icon_fire£ / 6£military_view_icon_shock£ / 4£military_view_icon_maneuver£ / 1£military_view_icon_siege£)"
+		value=27.000
+	}
+{
+		id=13
+		comparison=1
+		key="religion"
+		selector="catholic"
+		localization="Catholic"
+	}
+{
+		id=14
+		comparison=2
+		key="best_prov"
+		localization="Wien"
+		value=40.000
+	}
+{
+		id=15
+		comparison=2
+		key="disasters"
+		value=2.000
+	}
+}
+checksum="efd33b619f30a707864deb411a7e46f2"
