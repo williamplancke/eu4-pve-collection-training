@@ -24,6 +24,7 @@ class TradenodeFileContext():
         self.in_members_segment = in_members_segment
         return
     def store(self):
+        self.node_data.append(self.trade_node, self.inland, self.end_node, len(self.members), self.location)
         return
 def clean_and_extract_filename(filename):
     if '-' not in filename:
