@@ -1,0 +1,20 @@
+[[source]]
+# Package sources (PyPI, private repositories, etc.)
+
+[packages]
+# Production dependencies
+
+[dev-packages]
+# Development dependencies
+
+[requires]
+# Python version requirements
+
+[scripts]
+# Custom script definitions
+
+[pipenv]
+# Pipenv configuration directives
+
+[custom-category]
+# Custom package categories (e.g., docs, tests)
