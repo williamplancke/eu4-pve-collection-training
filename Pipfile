@@ -1,19 +1,27 @@
 [[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
 # Package sources (PyPI, private repositories, etc.)
 
 [packages]
 # Production dependencies
 
 [dev-packages]
+pandas = "*"
+numpy = "*"
+matplotlib = "*"
+pillow = "*"
 # Development dependencies
 
 [requires]
-# Python version requirements
+python_full_version = "3.13.10"
 
 [scripts]
 # Custom script definitions
 
 [pipenv]
+sort_pipfile = true
 # Pipenv configuration directives
 
 [custom-category]
