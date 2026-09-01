@@ -5,15 +5,11 @@ name = "pypi"
 # Package sources (PyPI, private repositories, etc.)
 
 [packages]
-# Production dependencies
-
-[dev-packages]
+python-dotenv = "*"
 pandas = "*"
 numpy = "*"
 matplotlib = "*"
 pillow = "*"
-# Development dependencies
-
 [requires]
 python_full_version = "3.13.10"
 

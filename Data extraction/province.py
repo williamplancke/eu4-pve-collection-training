@@ -1,8 +1,11 @@
+from pathlib import Path
 from os import getenv, listdir 
 from os.path import sep, isdir
 import pandas as pd
 from re import compile, search, match
+from dotenv import load_dotenv
 
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 DESIRED_PROV_DATA = ['owner', 'culture', 'religion', 'hre', 'base_tax', 'base_production', 'trade_goods', 'base_manpower', 'capital', 'is_city', 'center_of_trade']
 EU4_DIR = getenv("EU4_INSTALL_LOCATION")
 SEPARATOR = sep
