@@ -85,62 +85,50 @@ df['capital'] = df['capital'].fillna(df['name'])
 df['is_city'] = df['is_city'].fillna('no')
 df['center_of_trade'] = df['center_of_trade'].fillna(0)
 
-def process_tradenode_file_line(line, node_data, inland, end_node, location, members, trade_node, in_members_segment):
-    if 'in_members_segment' not in locals():
-        in_members_segment = False
-    if 'trade_node' not in locals():
-        trade_node = ''
+def process_tradenode_file_line(context, line):
     if match(NODE_NAME_REGEX, line):
-        if len(trade_node) > 0:
-            node_data.append([trade_node, inland, end_node, len(members), location])
+        if len(context.trade_node) > 0:
+            context.node_data.append([context.trade_node, context.inland, context.end_node, len(context.members), context.location])
         # Initialise all node values
-        inland = False
-        end_node = False
-        location = None
-        members = []
-        trade_node = line.strip().rstrip('={') # Remove whitespace before removing ={
-        return node_data, inland, end_node, location, members, trade_node, in_members_segment
+        context.inland = False
+        context.end_node = False
+        context.location = None
+        context.members = []
+        context.trade_node = line.strip().rstrip('={') # Remove whitespace before removing ={
+        return context
     if match(MEMBERS_LIST_REGEX, line):
-        in_members_segment = True
-        return node_data, inland, end_node, location, members, trade_node, in_members_segment
-    if in_members_segment and match(NUMBERS_IN_MEMBERS_LIST_REGEX, line):
+        context.in_members_segment = True
+        return context
+    if context.in_members_segment and match(NUMBERS_IN_MEMBERS_LIST_REGEX, line):
         for member in line.strip().split(' '):
-            members.append(member)
-        for member in members:
-            df.loc[df['id'] == member, 'trade_node'] = trade_node
+            context.members.append(member)
+        for member in context.members:
+            df.loc[df['id'] == member, 'trade_node'] = context.trade_node
         in_members_segment = False
-        return node_data, inland, end_node, location, members, trade_node, in_members_segment
+        return context
     try:
         split_line = line.split('=')
     except:
         assert('=' not in line)
-    if split_line:
+    if 'split_line' in locals() and len(split_line) > 0:
         if split_line[0].strip() == 'inland' and split_line[1].strip() == 'yes':
-            inland = True
-            return node_data, inland, end_node, location, members, trade_node, in_members_segment
+            context.inland = True
+            return context
         if split_line[0].strip() == 'end' and split_line[1].strip() == 'yes':
-            end_node = True
-            return node_data, inland, end_node, location, members, trade_node, in_members_segment
+            context.end_node = True
+            return context
         if split_line[0].strip() == 'location':
-            location = int(split_line[1].strip())
-    if in_members_segment and '}' in line and not match(NUMBERS_IN_MEMBERS_LIST_REGEX, line):
-        in_members_segment = False
-    return node_data, inland, end_node, location, members, trade_node, in_members_segment
-def initialise_tradenode_context():
-    inland = False
-    end_node = False
-    location = None
-    in_members_segment = False
-    members = []
-    node_data = []
-    trade_node = ''
-    return inland, end_node, location, in_members_segment, members, node_data, trade_node
+            context.location = int(split_line[1].strip())
+    if context.in_members_segment and '}' in line and not match(NUMBERS_IN_MEMBERS_LIST_REGEX, line):
+        context.in_members_segment = False
+    return context
+
 
 df['trade_node'] = None
-inland, end_node, location, in_members_segment, members, node_data, trade_node = initialise_tradenode_context()
+context = TradenodeFileContext()
 with open(TRADE_NODES_PATH) as nodefile:
     for line in nodefile:
         line = line.strip()
-        node_data, inland, end_node, location, members, trade_node, in_members_segment = process_tradenode_file_line(line, node_data, inland, end_node, location, members, trade_node, in_members_segment)
-df_trade_nodes = pd.DataFrame(data=node_data, columns=['name', 'inland', 'end_node', 'member_count', 'location'])
-df.to_csv('./data/provinces_stage1.csv')
+        context = process_tradenode_file_line(context, line)
+df_trade_nodes = pd.DataFrame(data=context.node_data, columns=['name', 'inland', 'end_node', 'member_count', 'location'])
+df.to_csv('../data/provinces_stage1.csv')
