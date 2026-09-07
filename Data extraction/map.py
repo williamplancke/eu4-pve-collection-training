@@ -5,7 +5,10 @@ import pandas as pd
 from PIL import Image
 import numpy as np
 from math import floor
+from dotenv import load_dotenv
+from pathlib import Path
 
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 EU4_DIR = getenv("EU4_INSTALL_LOCATION")
 SEPARATOR = sep
 MAP_DIR = EU4_DIR + SEPARATOR + 'map' + SEPARATOR
