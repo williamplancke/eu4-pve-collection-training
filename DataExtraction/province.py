@@ -14,8 +14,36 @@ TRADE_NODES_PATH = EU4_DIR + SEPARATOR + 'common' + SEPARATOR + 'tradenodes' + S
 NODE_NAME_REGEX = compile(r'\b(?!color\b)(?!outgoing\b)(?!path\b)(?!control\b)(?!members\b)\w+=\{')
 MEMBERS_LIST_REGEX = compile(r'(members={)')
 NUMBERS_IN_MEMBERS_LIST_REGEX = compile(r'\w+(\d+)\w')
+def main(DATADIR):
+    assert(isdir(EU4_DIR))
+    data = []
+    for file in listdir(PROV_HISTORY_DIR):
+        province_dict = read_province_file(PROV_HISTORY_DIR + SEPARATOR + file, file)
+        data.append(province_dict)
+    df = pd.DataFrame(data)
+    df.index = df.index.astype(int)
+    df = df.sort_index()
 
-assert(isdir(EU4_DIR))
+    df['owner'] = df['owner'].fillna('Unowned')
+    df['culture'] = df['culture'].fillna('Unowned')
+    df['religion'] = df['religion'].fillna('Unowned')
+    df['hre'] = df['hre'].fillna('no')
+    df['base_tax'] = df['base_tax'].fillna(0)
+    df['base_production'] = df['base_production'].fillna(0)
+    df['base_manpower'] = df['base_manpower'].fillna(0)
+    df['capital'] = df['capital'].fillna(df['name'])
+    df['is_city'] = df['is_city'].fillna('no')
+    df['center_of_trade'] = df['center_of_trade'].fillna(0)
+    df['trade_node'] = None
+    context = TradenodeFileContext()
+    with open(TRADE_NODES_PATH) as nodefile:
+        for line in nodefile:
+            line = line.strip()
+            context = process_tradenode_file_line(df, context, line)
+    df_trade_nodes = pd.DataFrame(data=context.node_data, columns=['name', 'inland', 'end_node', 'member_count', 'location'])
+    df.to_csv(DATADIR + sep + 'provinces_stage1.csv')
+    return
+
 class TradenodeFileContext():
     def __init__(self, node_data = None, inland = False, end_node = False, location = None, members = None, trade_node = '', in_members_segment = False):
         self.node_data = [] if node_data is None else node_data
@@ -66,26 +94,8 @@ def read_province_file(path, filename):
             province_dict.update({expected_key: None})
     province_dict.update({'name': province_name, 'id': province_id})
     return province_dict
-data = []
-for file in listdir(PROV_HISTORY_DIR):
-    province_dict = read_province_file(PROV_HISTORY_DIR + SEPARATOR + file, file)
-    data.append(province_dict)
-df = pd.DataFrame(data)
-df.index = df.index.astype(int)
-df = df.sort_index()
 
-df['owner'] = df['owner'].fillna('Unowned')
-df['culture'] = df['culture'].fillna('Unowned')
-df['religion'] = df['religion'].fillna('Unowned')
-df['hre'] = df['hre'].fillna('no')
-df['base_tax'] = df['base_tax'].fillna(0)
-df['base_production'] = df['base_production'].fillna(0)
-df['base_manpower'] = df['base_manpower'].fillna(0)
-df['capital'] = df['capital'].fillna(df['name'])
-df['is_city'] = df['is_city'].fillna('no')
-df['center_of_trade'] = df['center_of_trade'].fillna(0)
-
-def process_tradenode_file_line(context, line):
+def process_tradenode_file_line(df, context, line):
     if match(NODE_NAME_REGEX, line):
         if len(context.trade_node) > 0:
             context.node_data.append([context.trade_node, context.inland, context.end_node, len(context.members), context.location])
@@ -123,12 +133,3 @@ def process_tradenode_file_line(context, line):
         context.in_members_segment = False
     return context
 
-
-df['trade_node'] = None
-context = TradenodeFileContext()
-with open(TRADE_NODES_PATH) as nodefile:
-    for line in nodefile:
-        line = line.strip()
-        context = process_tradenode_file_line(context, line)
-df_trade_nodes = pd.DataFrame(data=context.node_data, columns=['name', 'inland', 'end_node', 'member_count', 'location'])
-df.to_csv('../data/provinces_stage1.csv')
