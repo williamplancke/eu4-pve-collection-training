@@ -13,6 +13,9 @@ EU4_DIR = getenv("EU4_INSTALL_LOCATION")
 SEPARATOR = sep
 MAP_DIR = EU4_DIR + SEPARATOR + 'map' + SEPARATOR
 
+def main(DATADIR):
+    return
+
 with open(MAP_DIR + 'definition.csv') as province_colour_values:
     data = []
     column_names = ['Id', 'Name', 'Red', 'Green', 'Blue']

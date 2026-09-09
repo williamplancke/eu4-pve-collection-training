@@ -1,5 +1,7 @@
 from os import sep
 from DataExtraction.province import main as province_main
+from DataExtraction.map import main as map_main
+from DataExtraction.savefile import main as savefile_main
 entrypoint = None
 if __name__ == '__main__':
     path_parts = __file__.split(sep)
@@ -7,4 +9,6 @@ if __name__ == '__main__':
     entrypoint = filename
     DATADIR = r'.\Data'
 province_main(DATADIR)
-print(entrypoint)
+map_main(DATADIR)
+savefile_main(DATADIR)
+print("Data extraction is complete")

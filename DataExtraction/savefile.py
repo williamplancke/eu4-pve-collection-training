@@ -26,7 +26,9 @@ TAGS_FILE = EU4_DIR / "common" / "country_tags" / "00_countries.txt"
 DESIRABLE_PROVINCE_DATA = ["num_of_times_developed_var", "owner", "controller", ]
 
 df_provinces = pd.read_csv(PROVINCE_DATA_PATH)
-
+def main(DATADIR):
+    
+    return
 class ProvinceDevelopment():
     def __init__(self, tax = 0, production = 0, manpower = 0):
         self.tax = tax
