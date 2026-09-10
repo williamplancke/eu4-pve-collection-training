@@ -7,14 +7,19 @@ import numpy as np
 from dotenv import load_dotenv
 from pathlib import Path
 
+PLAYER_FLAG = "players_countries={"
+PROVINCE_FLAG = compile(r'(-\d{1,4}={)')
+COUNTRY_FLAG = "countries={"
+CLOSE_SCOPE = "}"
+OWNER_CHANGE_REGEX = compile(r'^owner="(\w{3})"$')
+DEVELOPMENT_CLICKS_KEYS = {"num_of_times_developed_var", "num_of_times_developed"}
+CONTROLLER_OPEN_SCOPE_REGEX = r'controller={'
+TAG_ASSIGNMENT_REGEX = compile(r'(tag="\w{3}")')
+YEAR_SCOPE = compile(r'(\d{4}.\d{1,2}.\d{1,2}={)')
+BUILDINGS = ["courthouse", "town_hall", "university", "workshop", "counting_house", "temple", "cathedral", "marketplace", "trade_depot", "stock_exchange", "dock", "drydock", "shipyard", "grand_shipyard", "coastal_defence", "naval_battery", "barracks", "training_fields", "regimental_camp", "conscription_center", "fort_15th", "fort_16th", "fort_17th", "fort_18th", "farm_estate", "weapons", "textile", "plantations", "tradecompany", "mills", "wharf", "furnace", "state_house", "naval_equipment_manufactory"]
+HISTORY_SECTION = r'history={'
+BUILDINGS_SECTION = r'buildings={'
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DATA_DIR = PROJECT_ROOT / "Data"
-SAVE_FILES_DIR = DATA_DIR / "save_files"
-PARSED_SAVE_DIR = DATA_DIR / "parsed_save_files"
-PROVINCE_DATA_PATH = DATA_DIR / "provinces_stage2.csv"
-
-load_dotenv(PROJECT_ROOT / ".env")
 eu4_install_location = getenv("EU4_INSTALL_LOCATION")
 if not eu4_install_location:
     raise RuntimeError(
@@ -25,9 +30,107 @@ EU4_DIR = Path(eu4_install_location)
 TAGS_FILE = EU4_DIR / "common" / "country_tags" / "00_countries.txt"
 DESIRABLE_PROVINCE_DATA = ["num_of_times_developed_var", "owner", "controller", ]
 
-df_provinces = pd.read_csv(PROVINCE_DATA_PATH)
+
 def main(DATADIR):
-    
+
+    SAVE_FILES_DIR = Path(DATADIR) / "save_files"
+    PARSED_SAVE_DIR = Path(DATADIR) / "parsed_save_files"
+    PROVINCE_DATA_PATH = Path(DATADIR) / "provinces_stage2.csv"
+    df_provinces = pd.read_csv(PROVINCE_DATA_PATH)
+    # Clear the generated extraction directory before producing the new set.
+    PARSED_SAVE_DIR.mkdir(parents=True, exist_ok=True)
+    for old_file in PARSED_SAVE_DIR.iterdir():
+        if old_file.is_file():
+            old_file.unlink()
+
+    extracted_files = []
+    for save_path in SAVE_FILES_DIR.glob("*.eu4"):
+        extracted_path = extract_eu4_save(save_path, PARSED_SAVE_DIR)
+        if extracted_path is not None:
+            extracted_files.append(extracted_path)
+
+    print(f"Extracted {len(extracted_files)} saves")
+    tags = extract_country_tags()
+    saves = []
+    for file_path in extracted_files:
+        with file_path.open(encoding="utf-8", errors="replace") as file:
+            context = SaveFileGamestateContext()
+            context.file_name = file_path.name.removesuffix(".eu4-gamestate")
+
+            for line in file:
+                context = identify_line(line.strip(), context, df_provinces, tags)
+                if context.done:
+                    break
+
+            if not context.done:
+                raise ValueError(
+                    f"Could not find the countries section while parsing {file_path.name}"
+                )
+
+            context.finalise()
+            saves.append(context)
+    all_saves_provinces = pd.DataFrame()
+    for save in saves:
+        all_saves_provinces = pd.concat([all_saves_provinces, save.provinces], ignore_index=True)
+    all_saves_provinces = all_saves_provinces.rename(columns={"id": "province_id"})
+
+    source_provinces = df_provinces.drop(
+        columns="Unnamed: 0",
+        errors="ignore",
+    ).copy()
+
+    all_saves_provinces["province_id"] = (
+        all_saves_provinces["province_id"].astype(int)
+    )
+    source_provinces["province_id"] = source_provinces["province_id"].astype(int)
+
+    joined_dfs = all_saves_provinces.merge(
+        source_provinces,
+        how="left",
+        left_on="province_id",
+        right_on="province_id",
+        suffixes=("_save", "_original"),
+        validate="many_to_one",
+    )
+
+    LEGACY_VALUE_DEFINERS = ["changed_tax", "changed_production", "changed_manpower", "changed_owner_num", "num_buildings"]
+    TARGET_COLUMN = "investment_preference_target"
+
+    joined_dfs["changed_tax"] = joined_dfs["new_tax"] - joined_dfs["base_tax"].fillna(0).astype(int)
+    joined_dfs["changed_production"] = joined_dfs["new_production"] - joined_dfs["base_production"].fillna(0).astype(int)
+    joined_dfs["changed_manpower"] = joined_dfs["new_manpower"] - joined_dfs["base_manpower"].fillna(0).astype(int)
+    joined_dfs["legacy_heuristic_score"] = joined_dfs[LEGACY_VALUE_DEFINERS].sum(axis=1)
+
+    # The behavioral target is defined only where a real save province is currently
+    # owned by a human player and has a matching source-data row. Test saves are
+    # retained for parser checks but excluded from model labels.
+    joined_dfs["has_source_data"] = joined_dfs["name"].notna()
+    joined_dfs["target_eligible"] = (
+        joined_dfs["is_player_owned"]
+        & ~joined_dfs["is_test_save"]
+        & joined_dfs["has_source_data"]
+    )
+    joined_dfs[TARGET_COLUMN] = np.nan
+    eligible = joined_dfs["target_eligible"]
+    joined_dfs.loc[eligible, TARGET_COLUMN] = (
+        joined_dfs.loc[eligible]
+        .groupby(["save", "current_owner"])["development_clicks"]
+        .rank(method="average", pct=True)
+    )
+
+    joined_dfs["high_investment_target"] = pd.NA
+    joined_dfs.loc[eligible, "high_investment_target"] = (
+        joined_dfs.loc[eligible, TARGET_COLUMN] >= 0.75
+    ).astype(int)
+
+    LEAKAGE_COLUMNS = [
+        "development_clicks", "new_tax", "new_production", "new_manpower",
+        "changed_tax", "changed_production", "changed_manpower",
+        "num_buildings", "changed_owner_num", "changed_controller_num",
+        "legacy_heuristic_score", TARGET_COLUMN, "high_investment_target",
+    ]
+    training_df = joined_dfs.loc[eligible].copy()
+    joined_dfs.to_csv(Path(DATADIR) / "provinces_stage3.csv")
     return
 class ProvinceDevelopment():
     def __init__(self, tax = 0, production = 0, manpower = 0):
@@ -47,7 +150,7 @@ class ProvinceContext():
         self.num_buildings = num_buildings
         self.current_owner = current_owner
         self.development_clicks = development_clicks
-    def get_old_development(self):
+    def get_old_development(self, df_provinces):
         row = df_provinces.loc[df_provinces["province_id"] == self.identifier]
         if row.empty:
             self.development = ProvinceDevelopment(0, 0, 0)
@@ -56,9 +159,9 @@ class ProvinceContext():
             source = row.iloc[0]
             self.development = ProvinceDevelopment(int(source.base_tax), int(source.base_production), int(source.base_manpower))
         return
-    def store(self, save_context):
+    def store(self, save_context, df_provinces):
         if self.development.tax == 0 or self.development.production == 0 or self.development.manpower == 0:
-            self.get_old_development()
+            self.get_old_development(df_provinces)
         save_context.provinces.append(self)
         return save_context
 class SaveFileGamestateContext():
@@ -120,35 +223,7 @@ def extract_eu4_save(save_path, output_dir):
 
     return destination
 
-# Clear the generated extraction directory before producing the new set.
-PARSED_SAVE_DIR.mkdir(parents=True, exist_ok=True)
-for old_file in PARSED_SAVE_DIR.iterdir():
-    if old_file.is_file():
-        old_file.unlink()
-
-extracted_files = []
-for save_path in SAVE_FILES_DIR.glob("*.eu4"):
-    extracted_path = extract_eu4_save(save_path, PARSED_SAVE_DIR)
-    if extracted_path is not None:
-        extracted_files.append(extracted_path)
-
-print(f"Extracted {len(extracted_files)} saves")
-tags = extract_country_tags()
-
-PLAYER_FLAG = "players_countries={"
-PROVINCE_FLAG = compile(r'(-\d{1,4}={)')
-COUNTRY_FLAG = "countries={"
-CLOSE_SCOPE = "}"
-OWNER_CHANGE_REGEX = compile(r'^owner="(\w{3})"$')
-DEVELOPMENT_CLICKS_KEYS = {"num_of_times_developed_var", "num_of_times_developed"}
-CONTROLLER_OPEN_SCOPE_REGEX = r'controller={'
-TAG_ASSIGNMENT_REGEX = compile(r'(tag="\w{3}")')
-YEAR_SCOPE = compile(r'(\d{4}.\d{1,2}.\d{1,2}={)')
-BUILDINGS = ["courthouse", "town_hall", "university", "workshop", "counting_house", "temple", "cathedral", "marketplace", "trade_depot", "stock_exchange", "dock", "drydock", "shipyard", "grand_shipyard", "coastal_defence", "naval_battery", "barracks", "training_fields", "regimental_camp", "conscription_center", "fort_15th", "fort_16th", "fort_17th", "fort_18th", "farm_estate", "weapons", "textile", "plantations", "tradecompany", "mills", "wharf", "furnace", "state_house", "naval_equipment_manufactory"]
-HISTORY_SECTION = r'history={'
-BUILDINGS_SECTION = r'buildings={'
-
-def identify_line(line, context):
+def identify_line(line, context, df_provinces, tags):
     if line is None or line == '' or line.startswith('#'):
         context.prev_line = line
         return context # Empty line or commented out
@@ -174,7 +249,7 @@ def identify_line(line, context):
         return context
     if match(PROVINCE_FLAG, line):
         if context.in_province is not None:
-            context.in_province.store(context)
+            context.in_province.store(context, df_provinces)
         identifier = int(line.lstrip("-").rstrip("={"))
         province = ProvinceContext(identifier)
         context.in_province = province
@@ -235,90 +310,9 @@ def identify_line(line, context):
                 return context
     if line == COUNTRY_FLAG:
         if context.in_province is not None:
-            context.in_province.store(context)
+            context.in_province.store(context, df_provinces)
         context.done = True
         context.prev_line = line
         return context
     context.prev_line = line
     return context
-
-saves = []
-for file_path in extracted_files:
-    with file_path.open(encoding="utf-8", errors="replace") as file:
-        context = SaveFileGamestateContext()
-        context.file_name = file_path.name.removesuffix(".eu4-gamestate")
-
-        for line in file:
-            context = identify_line(line.strip(), context)
-            if context.done:
-                break
-
-        if not context.done:
-            raise ValueError(
-                f"Could not find the countries section while parsing {file_path.name}"
-            )
-
-        context.finalise()
-        saves.append(context)
-all_saves_provinces = pd.DataFrame()
-for save in saves:
-    all_saves_provinces = pd.concat([all_saves_provinces, save.provinces], ignore_index=True)
-all_saves_provinces = all_saves_provinces.rename(columns={"id": "province_id"})
-
-source_provinces = df_provinces.drop(
-    columns="Unnamed: 0",
-    errors="ignore",
-).copy()
-
-all_saves_provinces["province_id"] = (
-    all_saves_provinces["province_id"].astype(int)
-)
-source_provinces["province_id"] = source_provinces["province_id"].astype(int)
-
-joined_dfs = all_saves_provinces.merge(
-    source_provinces,
-    how="left",
-    left_on="province_id",
-    right_on="province_id",
-    suffixes=("_save", "_original"),
-    validate="many_to_one",
-)
-
-LEGACY_VALUE_DEFINERS = ["changed_tax", "changed_production", "changed_manpower", "changed_owner_num", "num_buildings"]
-TARGET_COLUMN = "investment_preference_target"
-
-joined_dfs["changed_tax"] = joined_dfs["new_tax"] - joined_dfs["base_tax"].fillna(0).astype(int)
-joined_dfs["changed_production"] = joined_dfs["new_production"] - joined_dfs["base_production"].fillna(0).astype(int)
-joined_dfs["changed_manpower"] = joined_dfs["new_manpower"] - joined_dfs["base_manpower"].fillna(0).astype(int)
-joined_dfs["legacy_heuristic_score"] = joined_dfs[LEGACY_VALUE_DEFINERS].sum(axis=1)
-
-# The behavioral target is defined only where a real save province is currently
-# owned by a human player and has a matching source-data row. Test saves are
-# retained for parser checks but excluded from model labels.
-joined_dfs["has_source_data"] = joined_dfs["name"].notna()
-joined_dfs["target_eligible"] = (
-    joined_dfs["is_player_owned"]
-    & ~joined_dfs["is_test_save"]
-    & joined_dfs["has_source_data"]
-)
-joined_dfs[TARGET_COLUMN] = np.nan
-eligible = joined_dfs["target_eligible"]
-joined_dfs.loc[eligible, TARGET_COLUMN] = (
-    joined_dfs.loc[eligible]
-    .groupby(["save", "current_owner"])["development_clicks"]
-    .rank(method="average", pct=True)
-)
-
-joined_dfs["high_investment_target"] = pd.NA
-joined_dfs.loc[eligible, "high_investment_target"] = (
-    joined_dfs.loc[eligible, TARGET_COLUMN] >= 0.75
-).astype(int)
-
-LEAKAGE_COLUMNS = [
-    "development_clicks", "new_tax", "new_production", "new_manpower",
-    "changed_tax", "changed_production", "changed_manpower",
-    "num_buildings", "changed_owner_num", "changed_controller_num",
-    "legacy_heuristic_score", TARGET_COLUMN, "high_investment_target",
-]
-training_df = joined_dfs.loc[eligible].copy()
-joined_dfs.to_csv(DATA_DIR / "provinces_stage3.csv")
