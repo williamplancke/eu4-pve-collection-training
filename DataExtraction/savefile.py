@@ -102,12 +102,10 @@ def main(DATADIR):
     joined_dfs["legacy_heuristic_score"] = joined_dfs[LEGACY_VALUE_DEFINERS].sum(axis=1)
 
     # The behavioral target is defined only where a real save province is currently
-    # owned by a human player and has a matching source-data row. Test saves are
-    # retained for parser checks but excluded from model labels.
+    # owned by a human player and has a matching source-data row.
     joined_dfs["has_source_data"] = joined_dfs["name"].notna()
     joined_dfs["target_eligible"] = (
         joined_dfs["is_player_owned"]
-        & ~joined_dfs["is_test_save"]
         & joined_dfs["has_source_data"]
     )
     joined_dfs[TARGET_COLUMN] = np.nan
@@ -185,7 +183,7 @@ class SaveFileGamestateContext():
                                             "is_player_owned": province.current_owner in player_by_country, "player": player_by_country.get(province.current_owner)})
         self.provinces = pd.DataFrame(list_of_provinces_dicts)
         self.provinces["save"] = self.file_name
-        self.provinces["is_test_save"] = self.file_name.startswith("Test " )
+
         return
 
 def extract_country_tags():

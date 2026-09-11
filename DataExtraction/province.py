@@ -14,11 +14,7 @@ TRADE_NODES_PATH = EU4_DIR + SEPARATOR + 'common' + SEPARATOR + 'tradenodes' + S
 NODE_NAME_REGEX = compile(r'\b(?!color\b)(?!outgoing\b)(?!path\b)(?!control\b)(?!members\b)\w+=\{')
 MEMBERS_LIST_REGEX = compile(r'(members={)')
 NUMBERS_IN_MEMBERS_LIST_REGEX = compile(r'\w+(\d+)\w')
-if __name__ == '__main__':
-    path_parts = __file__.split(sep)
-    filename = path_parts[len(path_parts) - 1]
-    entrypoint = filename
-    DATADIR = r'..\Data'
+
     
 def main(DATADIR):
     assert(isdir(EU4_DIR))
@@ -139,4 +135,10 @@ def process_tradenode_file_line(df, context, line):
     if context.in_members_segment and '}' in line and not match(NUMBERS_IN_MEMBERS_LIST_REGEX, line):
         context.in_members_segment = False
     return context
-main(DATADIR)
+if __name__ == '__main__':
+    path_parts = __file__.split(sep)
+    filename = path_parts[len(path_parts) - 1]
+    entrypoint = filename
+    DATADIR = r'..\Data'
+    main(DATADIR)
+

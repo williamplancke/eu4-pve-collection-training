@@ -10,6 +10,7 @@ pandas = "*"
 numpy = "*"
 matplotlib = "*"
 pillow = "*"
+
 [requires]
 python_full_version = "3.13.10"
 
@@ -22,3 +23,6 @@ sort_pipfile = true
 
 [custom-category]
 # Custom package categories (e.g., docs, tests)
+
+[dev-packages]
+ipykernel = "*"
