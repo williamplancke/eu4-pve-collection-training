@@ -162,10 +162,15 @@ class ProvinceContext():
             self.get_old_development(df_provinces)
         save_context.provinces.append(self)
         return save_context
-class SaveFileGamestateContext():
-    def __init__(self, prev_line = '', in_players_countries = False, in_province = None, player_countries = None, players = None, provinces = None, done = False):
+class PlayerCountryContext():
+    def __init__(self, prev_line = "tag", active = False):
         self.prev_line = prev_line
-        self.in_players_countries = in_players_countries
+        self.active = active
+        return
+class SaveFileGamestateContext():
+    def __init__(self, prev_line = '', pc_context = None, in_province = None, player_countries = None, players = None, provinces = None, done = False):
+        self.prev_line = prev_line
+        self.in_players_countries = PlayerCountryContext() if pc_context is None else pc_context
         self.in_province = in_province
         self.player_countries = [] if player_countries is None else player_countries
         self.players = [] if players is None else players
@@ -226,22 +231,24 @@ def identify_line(line, context, df_provinces, tags):
         context.prev_line = line
         return context # Empty line or commented out
     if line == PLAYER_FLAG:
-        context.in_players_countries = True
+        context.in_players_countries.active = True
         context.prev_line = line
         return context
     if line == CLOSE_SCOPE:
-        if context.in_players_countries:
-            context.in_players_countries = False
+        if context.in_players_countries.active:
+            context.in_players_countries.active = False
             context.prev_line = line
             return context
-    if context.in_players_countries:
+    if context.in_players_countries.active:
         if line.startswith('"') and line.endswith('"'):
             tag_or_player = line.strip('"')
-            if tag_or_player in tags:
+            if context.in_players_countries.prev_line == "player":
                 tag = tag_or_player
+                context.in_players_countries.prev_line = "tag"
                 context.player_countries.append(tag)
             else: 
                 player = tag_or_player
+                context.in_players_countries.prev_line = "player"
                 context.players.append(player)
         context.prev_line = line
         return context
